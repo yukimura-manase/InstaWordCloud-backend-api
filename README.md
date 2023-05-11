@@ -4,6 +4,30 @@
 
 <br>
 
+### 0. DockerNetwork を作成する
+
+[F-E] と [B-E]の Docker Compose 間で、通信するための共通の Network を作成しておきます。  
+`docker network create` コマンドで、独自の Network を作成することができます。
+
+```
+docker network create insta_word_cloud_app_network
+```
+
+`docker network ls` コマンドで、Docker Network の一覧を確認することができます。
+
+```
+docker network ls
+
+## [ 実行結果 ] ##
+NETWORK ID     NAME                           DRIVER    SCOPE
+6905ce02f3e1   bridge                         bridge    local
+7d0ac1503226   docker-practice-network        bridge    local
+7d2a0edfd235   flask-api_default              bridge    local
+a99e9af11f39   host                           host      local
+026def818f56   insta_word_cloud_app_default   bridge    local
+83e651bc9f6c   insta_word_cloud_app_network   bridge    local
+```
+
 ### 1. プロジェクトを Clone
 
 ```
@@ -83,3 +107,7 @@ docker-compose down
 ### 2. Docker コンテナの中に入って標準出力を実行する方法: Log 確認\_Develop_Debug_Skill
 
 [Docker コンテナの中に入って標準出力を実行する方法・確認する方法](https://masanyon.com/docker-container-exec-it-logs-inside/)
+
+### 3. 別々の docker-compose.yml で作成された Docker コンテナを Network 接続する方法
+
+[別々の docker-compose.yml で作成された Docker コンテナを Network 接続する方法](https://masanyon.com/docker-docker-compose-yml-container-network-share/)
