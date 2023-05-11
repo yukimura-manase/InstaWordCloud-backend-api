@@ -20,3 +20,15 @@ services:
       FLASK_ENV: development
     # Flaskを実行するコマンド
     command: flask run --host=0.0.0.0
+    # Containerが接続するNetworkを定義
+    networks:
+      - default
+      # ユーザー定義の独自_Network
+      - insta_word_cloud_app_network
+# servicesと同じ階層(レベル)で、networks という項目を設定
+# Docker Compose環境が接続するNetworkを追加する
+networks:
+  insta_word_cloud_app_network:
+    name: insta_word_cloud_app_network
+    # external: true はdocker-composeで管理されていない外部のネットワークという意味
+    external: true
