@@ -9,9 +9,9 @@ import traceback
 from flask import request, jsonify
 
 # import requests
-import csv
-import json
 import pprint
+
+import pandas as pd
 
 # PythonからPythonScriptを呼び出すためのモジュール！ => プログラム内でコマンド実行！
 # import subprocess
@@ -46,39 +46,24 @@ def front_info():
 # CSVの中身の情報、ColumnやRow_Dataを表示するためのエンドポイント, Method: POST
 @router.route('/create_csv_info', methods=['POST'])
 def create_csv_info():
-
     logger.debug('create_csv_info-アクセス！')
-    pprint.pprint(request)
-    # <Request 'http://localhost:5001/api/create_csv_info' [POST]>
-    print('-------------------------------------')
-
-    pprint.pprint(request.files)
-    # ImmutableMultiDict([('file', <FileStorage: 'robotama.csv' ('text/csv')>)])
-    print('-------------------------------------')
-
-    pprint.pprint(request.files['file'])
-    # <FileStorage: 'robotama.csv' ('text/csv')>
-    print('-------------------------------------')
-
+    logger.debug(request.files['file'])
     file = request.files['file']
-    pprint.pprint(csv.reader(file))
-    # <_csv.reader object at 0xffff952222e0>
-    print('-------------------------------------')
 
-    # if file:
-    #     # ファイルを読み込んで処理する
-    #     reader = csv.reader(file)
-    #     print('-------------------------------------')
-    #     for row in reader:
-    #         # データ処理
-    #         pass
+    if file:
+        # CSVファイルの読み込み
+        df = pd.read_csv(file, encoding='utf-8')
+        pprint.pprint(df)
+        # DataFrameをJSON形式に変換
+        json_data = df.to_json(orient='records')
+        logger.debug(json_data)
+        return json_data
 
-    responseData = {
-        "robotama": 'ロボ玉',
-        "hakutou": '白桃さん',
-        "momo": 'ももちゃん',
-    }
-    return jsonify(responseData)
+    else:
+        responseData = {
+            'error_msg': 'Fileが存在しません！' 
+        }
+        return jsonify(responseData)
 
 
 # FrontAppの情報を確認するためのエンドポイント, Method: GET
