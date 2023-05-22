@@ -2,3 +2,4 @@ flask==2.0.1
 python-dotenv
 flask-cors
 requests
+pandas
